@@ -17,6 +17,7 @@ def person_api_overview(request):
 
     return Response(person_api_urls)
 
+# curl -v http://localhost:8000/person_api/person-list/
 @api_view(['GET'])
 def ShowAll(request):
     people = Person.objects.all()
