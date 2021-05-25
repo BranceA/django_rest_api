@@ -8,4 +8,4 @@ class Person(models.Model):
     date_updated = models.DateField(default='1111-11-11')
 
     def __str__(self):
-        return self.name
+        return self.name12
