@@ -40,3 +40,12 @@ def CreatePerson(request):
         serializer.save(date_joined = date.today())
 
     return Response(serializer.data)
+
+@api_view(['PUT'])
+def UpdatePerson(request, pk):
+    person = Person.objects.get(id=pk)
+    serializer = PersonSerializer(instance=person, data=request.data)
+    if serializer.is_valid():
+        serializer.save(date_updated = date.today())
+
+    return Response(serializer.data)

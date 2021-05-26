@@ -6,4 +6,5 @@ urlpatterns = [
     path('person-list/', views.ShowAll, name='person-list'),
     path('person/<int:pk>', views.ShowById, name='single-person'),
     path('create-person/', views.CreatePerson, name='create-person'),
+    path('update-person/<int:pk>', views.UpdatePerson, name='update-person'),
 ]
