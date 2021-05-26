@@ -30,3 +30,13 @@ def ShowById(request, pk):
     person = Person.objects.get(id=pk)
     serializer = PersonSerializer(person, many=False)
     return Response(serializer.data)
+
+@api_view(['POST'])
+def CreatePerson(request):
+    serializer = PersonSerializer(data=request.data)
+    serializer.__setattr__
+
+    if serializer.is_valid():
+        serializer.save()
+
+    return Response(serializer.data)
