@@ -1,6 +1,8 @@
+from datetime import date
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
 from django.shortcuts import render
+from rest_framework import serializers
 
 from . models import Person
 from . serializers import PersonSerializer
@@ -34,9 +36,7 @@ def ShowById(request, pk):
 @api_view(['POST'])
 def CreatePerson(request):
     serializer = PersonSerializer(data=request.data)
-    serializer.__setattr__
-
     if serializer.is_valid():
-        serializer.save()
+        serializer.save(date_joined = date.today())
 
     return Response(serializer.data)
