@@ -23,3 +23,10 @@ def ShowAll(request):
     people = Person.objects.all()
     serializer = PersonSerializer(people, many=True)
     return Response(serializer.data)
+
+
+@api_view(['GET'])
+def ShowById(request, pk):
+    person = Person.objects.get(id=pk)
+    serializer = PersonSerializer(person, many=False)
+    return Response(serializer.data)
