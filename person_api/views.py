@@ -70,3 +70,10 @@ def ShowAll(request):
     jobs = Job.objects.all()
     serializer = JobSerializer(jobs, many=True)
     return Response(serializer.data)
+
+# curl -v http://localhost:8000/person_api/job/3
+@api_view(['GET'])
+def ShowById(request, pk):
+    job = Job.objects.get(id=pk)
+    serializer = JobSerializer(job, many=False)
+    return Response(serializer.data)

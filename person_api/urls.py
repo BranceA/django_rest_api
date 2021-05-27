@@ -9,4 +9,5 @@ urlpatterns = [
     path('update-person/<int:pk>', views.UpdatePerson, name='update-person'),
     path('delete-person/<int:pk>', views.DeletePerson, name='delete-person'),
     path('job-list/', views.ShowAll, name='job-list'),
+    path('job/<int:pk>', views.ShowById, name='single-job'),
 ]
