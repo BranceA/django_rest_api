@@ -66,14 +66,14 @@ def DeletePerson(request, pk):
 
 # curl -v http://localhost:8000/person_api/job-list/
 @api_view(['GET'])
-def ShowAll(request):
+def ShowAllJobs(request):
     jobs = Job.objects.all()
     serializer = JobSerializer(jobs, many=True)
     return Response(serializer.data)
 
 # curl -v http://localhost:8000/person_api/job/3
 @api_view(['GET'])
-def ShowById(request, pk):
+def ShowJobById(request, pk):
     job = Job.objects.get(id=pk)
     serializer = JobSerializer(job, many=False)
     return Response(serializer.data)
@@ -82,6 +82,15 @@ def ShowById(request, pk):
 @api_view(['POST'])
 def CreateJob(request):
     serializer = JobSerializer(data=request.data)
+    if serializer.is_valid():
+        serializer.save()
+    return Response(serializer.data)
+
+# curl -X PUT http://localhost:8000/person_api/update-job/3 -H 'Content-type:application/json' -d '{"job_title":"Batman", "salary":1000000}'
+@api_view(['PUT'])
+def UpdateJob(request, pk):
+    job = Job.objects.get(id=pk)
+    serializer = JobSerializer(instance=job, data=request.data)
     if serializer.is_valid():
         serializer.save()
     return Response(serializer.data)

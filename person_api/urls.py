@@ -8,7 +8,8 @@ urlpatterns = [
     path('create-person/', views.CreatePerson, name='create-person'),
     path('update-person/<int:pk>', views.UpdatePerson, name='update-person'),
     path('delete-person/<int:pk>', views.DeletePerson, name='delete-person'),
-    path('job-list/', views.ShowAll, name='job-list'),
-    path('job/<int:pk>', views.ShowById, name='single-job'),
+    path('job-list/', views.ShowAllJobs, name='job-list'),
+    path('job/<int:pk>', views.ShowJobById, name='single-job'),
     path('create-job/', views.CreateJob, name='create-job'),
+    path('update-job/<int:pk>', views.UpdateJob, name='update-job'),
 ]
