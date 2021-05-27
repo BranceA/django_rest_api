@@ -4,8 +4,8 @@ from rest_framework.response import Response
 from django.shortcuts import render
 from rest_framework import serializers
 
-from . models import Person
-from . serializers import PersonSerializer
+from . models import Job, Person
+from . serializers import JobSerializer, PersonSerializer
 
 @api_view(['GET'])
 def person_api_overview(request):
@@ -15,6 +15,11 @@ def person_api_overview(request):
         'Create Person': '/person-create',
         'Update Person': '/person-update/<int:id>',
         'Delete': '/person-delete/<int:id>',
+        'List Jobs': '/job-list',
+        'Job View': '/job/<int:id>',
+        'Create Job': '/job-create',
+        'Update Job': '/job-update/<int:id>',
+        'Delete Job': '/job-delete/<int:id>',
     }
 
     return Response(person_api_urls)
@@ -52,8 +57,16 @@ def UpdatePerson(request, pk):
 
     return Response(serializer.data)
 
+# curl -X DELETE http://localhost:8000/person_api/delete-person/5
 @api_view(['DELETE'])
 def DeletePerson(request, pk):
     person = Person.objects.get(id=pk)
     person.delete()
     return Response('Person deleted successfully.')
+
+# curl -v http://localhost:8000/person_api/job-list/
+@api_view(['GET'])
+def ShowAll(request):
+    jobs = Job.objects.all()
+    serializer = JobSerializer(jobs, many=True)
+    return Response(serializer.data)
