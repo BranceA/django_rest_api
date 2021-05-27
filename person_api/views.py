@@ -94,3 +94,10 @@ def UpdateJob(request, pk):
     if serializer.is_valid():
         serializer.save()
     return Response(serializer.data)
+
+# curl -X DELETE http://localhost:8000/person_api/delete-job/5
+@api_view(['DELETE'])
+def DeleteJob(request, pk):
+    job = Job.objects.get(id=pk)
+    job.delete()
+    return Response('Job deleted successfully.')
