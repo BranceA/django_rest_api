@@ -9,3 +9,10 @@ class Person(models.Model):
 
     def __str__(self):
         return self.name
+
+class Job(models.Model):
+    job_title = models.CharField(max_length=50)
+    salary = models.FloatField()
+
+    def __str__(self):
+        return self.name
