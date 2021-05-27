@@ -51,3 +51,9 @@ def UpdatePerson(request, pk):
         serializer.save(date_updated = date.today())
 
     return Response(serializer.data)
+
+@api_view(['DELETE'])
+def DeletePerson(request, pk):
+    person = Person.objects.get(id=pk)
+    person.delete()
+    return Response('Person deleted successfully.')
