@@ -26,13 +26,14 @@ def ShowAll(request):
     serializer = PersonSerializer(people, many=True)
     return Response(serializer.data)
 
-
+# curl -v http://localhost:8000/person_api/person/3
 @api_view(['GET'])
 def ShowById(request, pk):
     person = Person.objects.get(id=pk)
     serializer = PersonSerializer(person, many=False)
     return Response(serializer.data)
 
+# curl -X POST http://localhost:8000/person_api/create-person/ -H 'Content-type:application/json' -d '{"name": "Dan Doe", "age": 20}'
 @api_view(['POST'])
 def CreatePerson(request):
     serializer = PersonSerializer(data=request.data)
@@ -41,6 +42,7 @@ def CreatePerson(request):
 
     return Response(serializer.data)
 
+# curl -X PUT http://localhost:8000/person_api/update-person/3 -H 'Content-type:application/json' -d '{"name": "William Doe", "date_joined": "1920-01-01", "age": 98}'
 @api_view(['PUT'])
 def UpdatePerson(request, pk):
     person = Person.objects.get(id=pk)
