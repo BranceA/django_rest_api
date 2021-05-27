@@ -77,3 +77,11 @@ def ShowById(request, pk):
     job = Job.objects.get(id=pk)
     serializer = JobSerializer(job, many=False)
     return Response(serializer.data)
+
+# curl -X POST http://localhost:8000/person_api/create-job/ -H 'Content-type:application/json' -d '{"job_title":"Code Tester","salary":3500}'
+@api_view(['POST'])
+def CreateJob(request):
+    serializer = JobSerializer(data=request.data)
+    if serializer.is_valid():
+        serializer.save()
+    return Response(serializer.data)
