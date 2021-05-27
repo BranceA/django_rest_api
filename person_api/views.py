@@ -38,7 +38,7 @@ def ShowById(request, pk):
 def CreatePerson(request):
     serializer = PersonSerializer(data=request.data)
     if serializer.is_valid():
-        serializer.save(date_joined = date.today())
+        serializer.save(date_joined = date.today(), date_updated = date.today())
 
     return Response(serializer.data)
 
