@@ -100,3 +100,12 @@ def DeleteJob(request, pk):
     job = Job.objects.get(id=pk)
     job.delete()
     return Response('Job deleted successfully.')
+
+
+@api_view(['PUT'])
+def CreatePersonWithJob(request, pk):
+    job = Job.objects.get(id=pk)
+    serializer = PersonSerializer(data=request.data)
+    if serializer.is_valid():
+        serializer.save(job=job)
+        
