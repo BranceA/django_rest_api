@@ -8,7 +8,7 @@ class JobSerializer(serializers.ModelSerializer):
         fields = '__all__'
 
 class PersonSerializer(serializers.ModelSerializer):
-    job = JobSerializer(many=False)
+    job = JobSerializer(read_only=True)
     class Meta:
         model = Person
         fields = '__all__'

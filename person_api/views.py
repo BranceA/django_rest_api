@@ -44,7 +44,6 @@ def CreatePerson(request):
     serializer = PersonSerializer(data=request.data)
     if serializer.is_valid():
         serializer.save(date_joined = date.today(), date_updated = date.today())
-
     return Response(serializer.data)
 
 # curl -X PUT http://localhost:8000/person_api/update-person/3 -H 'Content-type:application/json' -d '{"name": "William Doe", "date_joined": "1920-01-01", "age": 98}'
