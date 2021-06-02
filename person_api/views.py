@@ -101,11 +101,13 @@ def DeleteJob(request, pk):
     job.delete()
     return Response('Job deleted successfully.')
 
-
+# curl -X POST http://localhost:8000/person_api/create-job/ -H 'Content-type:application/json' -d '{"job_title":"Nascar Driver","salary":112233}'
+# curl -X PUT http://localhost:8000/person_api/create-employee/6 -H 'Content-type:application/json' -d '{"name": "Hannah Doe", "age": 30}'
 @api_view(['PUT'])
 def CreatePersonWithJob(request, pk):
     job = Job.objects.get(id=pk)
     serializer = PersonSerializer(data=request.data)
     if serializer.is_valid():
         serializer.save(job=job)
+    return Response(serializer.data)
         
