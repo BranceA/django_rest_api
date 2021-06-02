@@ -103,6 +103,7 @@ def DeleteJob(request, pk):
 
 # curl -X POST http://localhost:8000/person_api/create-job/ -H 'Content-type:application/json' -d '{"job_title":"Nascar Driver","salary":112233}'
 # curl -X PUT http://localhost:8000/person_api/create-employee/6 -H 'Content-type:application/json' -d '{"name": "Hannah Doe", "age": 30}'
+# Include the id of an existing job in the url to add a job to the newly created person
 @api_view(['PUT'])
 def CreatePersonWithJob(request, pk):
     job = Job.objects.get(id=pk)
@@ -111,3 +112,16 @@ def CreatePersonWithJob(request, pk):
         serializer.save(job=job)
     return Response(serializer.data)
         
+
+# curl -X PUT http://localhost:8000/person_api/update-persons-job/3 -H 'Content-type:application/json' -d '{"job_title": "Lifeguard", "salary": 150000}'
+# Include the id of a person in the url to update their job with the job in the request
+@api_view(['PUT'])
+def UpdatePersonsJob(request, pk):
+    person = Person.objects.get(id=pk)
+    serializer = JobSerializer(data=request.data)
+    title = request.data.get('job_title')
+    if serializer.is_valid():
+        serializer.save()
+    person.job = Job.objects.get(job_title=title)
+    person.save()
+    return Response(serializer.data)
