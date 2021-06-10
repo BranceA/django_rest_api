@@ -92,7 +92,18 @@ class PersonTest(TestCase):
         )
         self.assertEqual(response.status_code, status.HTTP_204_NO_CONTENT)
 
+    # test to check if person can be deleted
     def test_delete_person(self):
         response = self.client.delete(
             reverse('delete-person', kwargs={'pk': self.sally.pk}))
         self.assertEqual(response.status_code, status.HTTP_204_NO_CONTENT)
+
+    # test to see if get request gets list of all jobs
+    def test_get_all_jobs(self):
+        # get API response
+        response = self.client.get(reverse('job-list'))
+        # get data from db
+        jobs = Job.objects.all()
+        serializer = JobSerializer(jobs, many=True)
+        self.assertEqual(response.data, serializer.data)
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
