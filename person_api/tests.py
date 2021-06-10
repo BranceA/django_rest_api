@@ -44,6 +44,10 @@ class PersonTest(TestCase):
             "name": "Hannah Doe",
             "age": 30
         }
+        self.lifeguard = {
+            "job_title": "Lifeguard", 
+            "salary": 150000
+        }
 
 
     # Test for person model
@@ -157,10 +161,13 @@ class PersonTest(TestCase):
         self.assertEqual(response.status_code, status.HTTP_204_NO_CONTENT)
 
     # test for creating a person with a preexisting job
-    def test_update_person_with_job(self):
+    def test_create_person_with_job(self):
         response = self.client.put(
             reverse('create-employee', kwargs={'pk': self.driver.pk}),
             data=json.dumps(self.hannah),
             content_type='application/json'
         )
+        person = Person.objects.get(name='Hannah Doe')
+        serializer = PersonSerializer(person)
+        self.assertEqual(response.data, serializer.data)
         self.assertEqual(response.status_code, status.HTTP_204_NO_CONTENT)

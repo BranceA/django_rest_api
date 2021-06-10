@@ -124,4 +124,4 @@ def UpdatePersonsJob(request, pk):
         serializer.save()
     person.job = Job.objects.get(job_title=title)
     person.save()
-    return Response(serializer.data)
+    return Response(serializer.data, status=status.HTTP_204_NO_CONTENT)
