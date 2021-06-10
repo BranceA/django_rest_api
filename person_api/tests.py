@@ -107,3 +107,12 @@ class PersonTest(TestCase):
         serializer = JobSerializer(jobs, many=True)
         self.assertEqual(response.data, serializer.data)
         self.assertEqual(response.status_code, status.HTTP_200_OK)
+
+    # test to get a single job
+    def test_get_single_job(self):
+        response = self.client.get(
+            reverse('single-job', kwargs={'pk': self.doctor.pk}))
+        job = Job.objects.get(pk=self.doctor.pk)
+        serializer = JobSerializer(job)
+        self.assertEqual(response.data, serializer.data)
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
