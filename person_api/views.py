@@ -2,7 +2,7 @@ from datetime import date
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
 from django.shortcuts import render
-from rest_framework import serializers
+from rest_framework import serializers, status
 
 from . models import Job, Person
 from . serializers import JobSerializer, PersonSerializer
@@ -44,7 +44,7 @@ def CreatePerson(request):
     serializer = PersonSerializer(data=request.data)
     if serializer.is_valid():
         serializer.save(date_joined = date.today(), date_updated = date.today())
-    return Response(serializer.data)
+    return Response(serializer.data, status=status.HTTP_201_CREATED)
 
 # curl -X PUT http://localhost:8000/person_api/update-person/3 -H 'Content-type:application/json' -d '{"name": "William Doe", "date_joined": "1920-01-01", "age": 98}'
 @api_view(['PUT'])
