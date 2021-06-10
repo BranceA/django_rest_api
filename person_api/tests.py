@@ -26,7 +26,11 @@ class PersonTest(TestCase):
             'name': 'Dan Doe',
             'age': 20
         }
-
+        self.william = {
+            "name": "William Doe", 
+            "date_joined": "1920-01-01", 
+            "age": 98
+        }
     # Test for person model
     def test_person(self):
         bob = Person.objects.get(name='Bob Doe')
@@ -70,6 +74,7 @@ class PersonTest(TestCase):
         self.assertEqual(response.data, serializer.data)
         self.assertEqual(response.status_code, status.HTTP_200_OK)
 
+    # test to check if person can be created
     def test_create_person(self):
         response = self.client.post(
             reverse('create-person'),
@@ -77,3 +82,12 @@ class PersonTest(TestCase):
             content_type='application/json'
         )
         self.assertEqual(response.status_code, status.HTTP_201_CREATED)
+
+    # test to check if person can be updated
+    def test_update_person(self):
+        response = self.client.put(
+            reverse('update-person', kwargs={'pk': self.billy.pk}),
+            data=json.dumps(self.william),
+            content_type='application/json'
+        )
+        self.assertEqual(response.status_code, status.HTTP_204_NO_CONTENT)

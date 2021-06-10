@@ -54,7 +54,7 @@ def UpdatePerson(request, pk):
     if serializer.is_valid():
         serializer.save(date_updated = date.today())
 
-    return Response(serializer.data)
+    return Response(serializer.data, status=status.HTTP_204_NO_CONTENT)
 
 # curl -X DELETE http://localhost:8000/person_api/delete-person/5
 @api_view(['DELETE'])
