@@ -16,6 +16,7 @@ class PersonTest(TestCase):
         self.doctor = Job.objects.create(job_title='Doctor', salary=120000)
         self.realtor = Job.objects.create(job_title='Realtor', salary=62000)
         self.professor = Job.objects.create(job_title='Professor', salary=50000)
+        self.driver = Job.objects.create(job_title='Nascar Driver', salary=112233)
 
         self.bob = Person.objects.create(age=30, date_joined='2021-05-10', date_updated='2021-05-15', name='Bob Doe', job=self.clown)
         self.sally = Person.objects.create(age=45, date_joined='2021-05-02', date_updated='2021-05-15', name='Sally Doe', job=self.doctor)
@@ -38,6 +39,10 @@ class PersonTest(TestCase):
         self.batman = {
             "job_title":"Batman", 
             "salary":1000000
+        }
+        self.hannah = {
+            "name": "Hannah Doe",
+            "age": 30
         }
 
 
@@ -149,4 +154,13 @@ class PersonTest(TestCase):
     def test_delete_job(self):
         response = self.client.delete(
             reverse('delete-job', kwargs={'pk': self.clown.pk}))
+        self.assertEqual(response.status_code, status.HTTP_204_NO_CONTENT)
+
+    # test for creating a person with a preexisting job
+    def test_update_person_with_job(self):
+        response = self.client.put(
+            reverse('create-employee', kwargs={'pk': self.driver.pk}),
+            data=json.dumps(self.hannah),
+            content_type='application/json'
+        )
         self.assertEqual(response.status_code, status.HTTP_204_NO_CONTENT)

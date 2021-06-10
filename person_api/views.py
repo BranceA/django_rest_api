@@ -110,7 +110,7 @@ def CreatePersonWithJob(request, pk):
     serializer = PersonSerializer(data=request.data)
     if serializer.is_valid():
         serializer.save(job=job)
-    return Response(serializer.data)
+    return Response(serializer.data, status=status.HTTP_204_NO_CONTENT)
         
 
 # curl -X PUT http://localhost:8000/person_api/update-persons-job/3 -H 'Content-type:application/json' -d '{"job_title": "Lifeguard", "salary": 150000}'
