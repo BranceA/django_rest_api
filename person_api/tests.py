@@ -35,6 +35,10 @@ class PersonTest(TestCase):
             "job_title":"Code Tester",
             "salary":3500
         }
+        self.batman = {
+            "job_title":"Batman", 
+            "salary":1000000
+        }
 
 
     # Test for person model
@@ -131,3 +135,12 @@ class PersonTest(TestCase):
             content_type='application/json'
         )
         self.assertEqual(response.status_code, status.HTTP_201_CREATED)
+
+    # test for updating a job
+    def test_update_job(self):
+        response = self.client.put(
+            reverse('update-job', kwargs={'pk': self.realtor.pk}),
+            data=json.dumps(self.batman),
+            content_type='application/json'
+        )
+        self.assertEqual(response.status_code, status.HTTP_204_NO_CONTENT)
