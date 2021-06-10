@@ -61,7 +61,7 @@ def UpdatePerson(request, pk):
 def DeletePerson(request, pk):
     person = Person.objects.get(id=pk)
     person.delete()
-    return Response('Person deleted successfully.')
+    return Response('Person deleted successfully.', status=status.HTTP_204_NO_CONTENT)
 
 # curl -v http://localhost:8000/person_api/job-list/
 @api_view(['GET'])
