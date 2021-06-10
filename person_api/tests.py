@@ -31,6 +31,12 @@ class PersonTest(TestCase):
             "date_joined": "1920-01-01", 
             "age": 98
         }
+        self.code_tester = {
+            "job_title":"Code Tester",
+            "salary":3500
+        }
+
+
     # Test for person model
     def test_person(self):
         bob = Person.objects.get(name='Bob Doe')
@@ -116,3 +122,12 @@ class PersonTest(TestCase):
         serializer = JobSerializer(job)
         self.assertEqual(response.data, serializer.data)
         self.assertEqual(response.status_code, status.HTTP_200_OK)
+
+    # test for creating new job
+    def test_create_job(self):
+        response = self.client.post(
+            reverse('create-job'),
+            data=json.dumps(self.code_tester),
+            content_type='application/json'
+        )
+        self.assertEqual(response.status_code, status.HTTP_201_CREATED)

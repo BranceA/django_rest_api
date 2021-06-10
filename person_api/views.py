@@ -83,7 +83,7 @@ def CreateJob(request):
     serializer = JobSerializer(data=request.data)
     if serializer.is_valid():
         serializer.save()
-    return Response(serializer.data)
+    return Response(serializer.data, status=status.HTTP_201_CREATED)
 
 # curl -X PUT http://localhost:8000/person_api/update-job/3 -H 'Content-type:application/json' -d '{"job_title":"Batman", "salary":1000000}'
 @api_view(['PUT'])
