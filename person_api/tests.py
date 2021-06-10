@@ -144,3 +144,9 @@ class PersonTest(TestCase):
             content_type='application/json'
         )
         self.assertEqual(response.status_code, status.HTTP_204_NO_CONTENT)
+
+    # test for deleting job
+    def test_delete_job(self):
+        response = self.client.delete(
+            reverse('delete-job', kwargs={'pk': self.clown.pk}))
+        self.assertEqual(response.status_code, status.HTTP_204_NO_CONTENT)

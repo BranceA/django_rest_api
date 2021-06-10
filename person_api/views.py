@@ -99,7 +99,7 @@ def UpdateJob(request, pk):
 def DeleteJob(request, pk):
     job = Job.objects.get(id=pk)
     job.delete()
-    return Response('Job deleted successfully.')
+    return Response('Job deleted successfully.', status=status.HTTP_204_NO_CONTENT)
 
 # curl -X POST http://localhost:8000/person_api/create-job/ -H 'Content-type:application/json' -d '{"job_title":"Nascar Driver","salary":112233}'
 # curl -X PUT http://localhost:8000/person_api/create-employee/6 -H 'Content-type:application/json' -d '{"name": "Hannah Doe", "age": 30}'
