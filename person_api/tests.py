@@ -12,15 +12,15 @@ class PersonTest(TestCase):
     # Test for person model
     def setUp(self):
         self.client = Client()
-        clown = Job.objects.create(job_title='Circus Clown', salary=35000)
-        doctor = Job.objects.create(job_title='Doctor', salary=120000)
-        realtor = Job.objects.create(job_title='Realtor', salary=62000)
-        professor = Job.objects.create(job_title='Professor', salary=50000)
+        self.clown = Job.objects.create(job_title='Circus Clown', salary=35000)
+        self.doctor = Job.objects.create(job_title='Doctor', salary=120000)
+        self.realtor = Job.objects.create(job_title='Realtor', salary=62000)
+        self.professor = Job.objects.create(job_title='Professor', salary=50000)
 
-        Person.objects.create(age=30, date_joined='2021-05-10', date_updated='2021-05-15', name='Bob Doe', job=clown)
-        Person.objects.create(age=45, date_joined='2021-05-02', date_updated='2021-05-15', name='Sally Doe', job=doctor)
-        Person.objects.create(age=7, date_joined='2021-08-10', date_updated='2021-11-10', name='Billy Doe', job=realtor)
-        Person.objects.create(age=22, date_joined='2020-02-10', date_updated='2021-12-25', name='Bertha Doe', job=professor)
+        self.bob = Person.objects.create(age=30, date_joined='2021-05-10', date_updated='2021-05-15', name='Bob Doe', job=self.clown)
+        self.sally = Person.objects.create(age=45, date_joined='2021-05-02', date_updated='2021-05-15', name='Sally Doe', job=self.doctor)
+        self.billy = Person.objects.create(age=7, date_joined='2021-08-10', date_updated='2021-11-10', name='Billy Doe', job=self.realtor)
+        self.bertha = Person.objects.create(age=22, date_joined='2020-02-10', date_updated='2021-12-25', name='Bertha Doe', job=self.professor)
 
     # Test for person model
     def test_person(self):
@@ -46,11 +46,20 @@ class PersonTest(TestCase):
         self.assertEqual(billy.job.job_title, 'Realtor')
         self.assertEqual(billy.job.salary, 62000)
 
+    # test to see if get request gets list of all people
     def test_get_all_people(self):
         # get API response
         response = self.client.get(reverse('person-list'))
         # get data from db
         people = Person.objects.all()
         serializer = PersonSerializer(people, many=True)
+        self.assertEqual(response.data, serializer.data)
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+
+    def test_get_valid_single_person(self):
+        response = self.client.get(
+            reverse('single-person', kwargs={'pk': self.billy.pk}))
+        person = Person.objects.get(pk=self.billy.pk)
+        serializer = PersonSerializer(person)
         self.assertEqual(response.data, serializer.data)
         self.assertEqual(response.status_code, status.HTTP_200_OK)
