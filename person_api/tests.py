@@ -1,5 +1,6 @@
 import json
 from rest_framework import status
+from rest_framework.test import APIClient
 from django.test import TestCase, Client
 from django.urls import reverse
 import datetime
@@ -7,11 +8,10 @@ import datetime
 from .models import Person, Job
 from .serializers import PersonSerializer, JobSerializer
 
-client = Client()
-
 class PersonTest(TestCase):
     # Test for person model
     def setUp(self):
+        self.client = Client()
         clown = Job.objects.create(job_title='Circus Clown', salary=35000)
         doctor = Job.objects.create(job_title='Doctor', salary=120000)
         realtor = Job.objects.create(job_title='Realtor', salary=62000)
@@ -22,6 +22,7 @@ class PersonTest(TestCase):
         Person.objects.create(age=7, date_joined='2021-08-10', date_updated='2021-11-10', name='Billy Doe', job=realtor)
         Person.objects.create(age=22, date_joined='2020-02-10', date_updated='2021-12-25', name='Bertha Doe', job=professor)
 
+    # Test for person model
     def test_person(self):
         bob = Person.objects.get(name='Bob Doe')
         sally = Person.objects.get(name='Sally Doe')
@@ -45,11 +46,11 @@ class PersonTest(TestCase):
         self.assertEqual(billy.job.job_title, 'Realtor')
         self.assertEqual(billy.job.salary, 62000)
 
-    # def test_get_all_people(self):
-    #     # get API response
-    #     response = client.get(reverse('ShowAll'))
-    #     # get data from db
-    #     people = Person.objects.all()
-    #     serializer = PersonSerializer(people, many=True)
-    #     self.assertEqual(response.data, serializer.data)
-    #     self.assertEqual(response.status_code, status.HTTP_200_OK)
+    def test_get_all_people(self):
+        # get API response
+        response = self.client.get(reverse('person-list'))
+        # get data from db
+        people = Person.objects.all()
+        serializer = PersonSerializer(people, many=True)
+        self.assertEqual(response.data, serializer.data)
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
