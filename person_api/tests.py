@@ -171,3 +171,15 @@ class PersonTest(TestCase):
         serializer = PersonSerializer(person)
         self.assertEqual(response.data, serializer.data)
         self.assertEqual(response.status_code, status.HTTP_204_NO_CONTENT)
+
+    # test for updating a persons job
+    def test_update_persons_job(self):
+        response = self.client.put(
+            reverse('update-persons-job', kwargs={'pk': self.sally.pk}),
+            data=json.dumps(self.lifeguard),
+            content_type='application/json'
+        )
+        person = Person.objects.get(pk=self.sally.pk)
+        serializer = PersonSerializer(person)
+        self.assertEqual(response.data, serializer.data)
+        self.assertEqual(response.status_code, status.HTTP_204_NO_CONTENT)
