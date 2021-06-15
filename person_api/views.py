@@ -111,7 +111,7 @@ def CreatePersonWithJob(request, pk):
     return Response(serializer.data, status=status.HTTP_201_CREATED)
         
 
-# curl -X PUT http://localhost:8000/person_api/update-persons-job/3 -H 'Content-type:application/json' -d '{"job_title": "Lifeguard", "salary": 150000}'
+# curl -X PUT http://localhost:8000/person_api/update-persons-job/1 -H 'Content-type:application/json' -d '{"job_title": "Lifeguard", "salary": 150000}'
 # Include the id of a person in the url to update their job with the job in the request
 @api_view(['PUT'])
 def UpdatePersonsJob(request, pk):
