@@ -84,7 +84,7 @@ def CreateJob(request):
         serializer.save()
     return Response(serializer.data, status=status.HTTP_201_CREATED)
 
-# curl -X PUT http://localhost:8000/person_api/update-job/3 -H 'Content-type:application/json' -d '{"job_title":"Batman", "salary":1000000}'
+# curl -X PUT http://localhost:8000/person_api/update-job/2 -H 'Content-type:application/json' -d '{"job_title":"Batman", "salary":1000000}'
 @api_view(['PUT'])
 def UpdateJob(request, pk):
     job = Job.objects.get(id=pk)
@@ -93,22 +93,21 @@ def UpdateJob(request, pk):
         serializer.save()
     return Response(serializer.data, status=status.HTTP_200_OK)
 
-# curl -X DELETE http://localhost:8000/person_api/delete-job/5
+# curl -X DELETE http://localhost:8000/person_api/delete-job/4
 @api_view(['DELETE'])
 def DeleteJob(request, pk):
     job = Job.objects.get(id=pk)
     job.delete()
     return Response('Job deleted successfully.', status=status.HTTP_200_OK)
 
-# curl -X POST http://localhost:8000/person_api/create-job/ -H 'Content-type:application/json' -d '{"job_title":"Nascar Driver","salary":112233}'
-# curl -X POST http://localhost:8000/person_api/create-employee/6 -H 'Content-type:application/json' -d '{"name": "Hannah Doe", "age": 30}'
+# curl -X POST http://localhost:8000/person_api/create-employee/5 -H 'Content-type:application/json' -d '{"name": "Hannah Doe", "age": 30}'
 # Include the id of an existing job in the url to add a job to the newly created person
 @api_view(['POST'])
 def CreatePersonWithJob(request, pk):
     job = Job.objects.get(id=pk)
     serializer = PersonSerializer(data=request.data)
     if serializer.is_valid():
-        serializer.save(job=job)
+        serializer.save(job=job, date_joined=date.today(), date_updated=date.today())
     return Response(serializer.data, status=status.HTTP_201_CREATED)
         
 
@@ -122,6 +121,7 @@ def UpdatePersonsJob(request, pk):
     if serializer.is_valid():
         serializer.save()
     person.job = Job.objects.get(job_title=title)
+    person.date_updated = date.today()
     person.save()
     person = Person.objects.get(id=pk)
     person_serializer = PersonSerializer(person)
