@@ -109,13 +109,13 @@ class PersonTest(TestCase):
             data=json.dumps(self.william),
             content_type='application/json'
         )
-        self.assertEqual(response.status_code, status.HTTP_204_NO_CONTENT)
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
 
     # test to check if person can be deleted
     def test_delete_person(self):
         response = self.client.delete(
             reverse('delete-person', kwargs={'pk': self.sally.pk}))
-        self.assertEqual(response.status_code, status.HTTP_204_NO_CONTENT)
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
 
     # test to see if get request gets list of all jobs
     def test_get_all_jobs(self):
@@ -152,17 +152,17 @@ class PersonTest(TestCase):
             data=json.dumps(self.batman),
             content_type='application/json'
         )
-        self.assertEqual(response.status_code, status.HTTP_204_NO_CONTENT)
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
 
     # test for deleting job
     def test_delete_job(self):
         response = self.client.delete(
             reverse('delete-job', kwargs={'pk': self.clown.pk}))
-        self.assertEqual(response.status_code, status.HTTP_204_NO_CONTENT)
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
 
     # test for creating a person with a preexisting job
     def test_create_person_with_job(self):
-        response = self.client.put(
+        response = self.client.post(
             reverse('create-employee', kwargs={'pk': self.driver.pk}),
             data=json.dumps(self.hannah),
             content_type='application/json'
@@ -170,7 +170,7 @@ class PersonTest(TestCase):
         person = Person.objects.get(name='Hannah Doe')
         serializer = PersonSerializer(person)
         self.assertEqual(response.data, serializer.data)
-        self.assertEqual(response.status_code, status.HTTP_204_NO_CONTENT)
+        self.assertEqual(response.status_code, status.HTTP_201_CREATED)
 
     # test for updating a persons job
     def test_update_persons_job(self):
@@ -182,4 +182,4 @@ class PersonTest(TestCase):
         person = Person.objects.get(pk=self.sally.pk)
         serializer = PersonSerializer(person)
         self.assertEqual(response.data, serializer.data)
-        self.assertEqual(response.status_code, status.HTTP_204_NO_CONTENT)
+        self.assertEqual(response.status_code, status.HTTP_201_CREATED)

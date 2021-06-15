@@ -53,15 +53,14 @@ def UpdatePerson(request, pk):
     serializer = PersonSerializer(instance=person, data=request.data)
     if serializer.is_valid():
         serializer.save(date_updated = date.today())
-
-    return Response(serializer.data, status=status.HTTP_204_NO_CONTENT)
+    return Response(serializer.data, status=status.HTTP_200_OK)
 
 # curl -X DELETE http://localhost:8000/person_api/delete-person/5
 @api_view(['DELETE'])
 def DeletePerson(request, pk):
     person = Person.objects.get(id=pk)
     person.delete()
-    return Response('Person deleted successfully.', status=status.HTTP_204_NO_CONTENT)
+    return Response('Person deleted successfully.', status=status.HTTP_200_OK)
 
 # curl -v http://localhost:8000/person_api/job-list/
 @api_view(['GET'])
@@ -92,25 +91,25 @@ def UpdateJob(request, pk):
     serializer = JobSerializer(instance=job, data=request.data)
     if serializer.is_valid():
         serializer.save()
-    return Response(serializer.data, status=status.HTTP_204_NO_CONTENT)
+    return Response(serializer.data, status=status.HTTP_200_OK)
 
 # curl -X DELETE http://localhost:8000/person_api/delete-job/5
 @api_view(['DELETE'])
 def DeleteJob(request, pk):
     job = Job.objects.get(id=pk)
     job.delete()
-    return Response('Job deleted successfully.', status=status.HTTP_204_NO_CONTENT)
+    return Response('Job deleted successfully.', status=status.HTTP_200_OK)
 
 # curl -X POST http://localhost:8000/person_api/create-job/ -H 'Content-type:application/json' -d '{"job_title":"Nascar Driver","salary":112233}'
-# curl -X PUT http://localhost:8000/person_api/create-employee/6 -H 'Content-type:application/json' -d '{"name": "Hannah Doe", "age": 30}'
+# curl -X POST http://localhost:8000/person_api/create-employee/6 -H 'Content-type:application/json' -d '{"name": "Hannah Doe", "age": 30}'
 # Include the id of an existing job in the url to add a job to the newly created person
-@api_view(['PUT'])
+@api_view(['POST'])
 def CreatePersonWithJob(request, pk):
     job = Job.objects.get(id=pk)
     serializer = PersonSerializer(data=request.data)
     if serializer.is_valid():
         serializer.save(job=job)
-    return Response(serializer.data, status=status.HTTP_204_NO_CONTENT)
+    return Response(serializer.data, status=status.HTTP_201_CREATED)
         
 
 # curl -X PUT http://localhost:8000/person_api/update-persons-job/3 -H 'Content-type:application/json' -d '{"job_title": "Lifeguard", "salary": 150000}'
@@ -126,4 +125,4 @@ def UpdatePersonsJob(request, pk):
     person.save()
     person = Person.objects.get(id=pk)
     person_serializer = PersonSerializer(person)
-    return Response(person_serializer.data, status=status.HTTP_204_NO_CONTENT)
+    return Response(person_serializer.data, status=status.HTTP_201_CREATED)
